@@ -440,12 +440,6 @@
             display: block;
         }
 
-        .set-images-container .product-img-wrapper {
-            flex: 1;
-            border-radius: 12px !important;
-            overflow: hidden !important;
-        }
-
         .product-btn.new-set {
             aspect-ratio: 1;
         }
@@ -488,24 +482,36 @@
             display: flex;
             gap: 4px;
             justify-content: center;
-            flex-shrink: 0;
+            align-items: center;
             width: 100%;
+            max-width: 100%;
+            flex: 1 1 auto;
             overflow: hidden;
         }
 
+        .set-images-container .product-img-wrapper {
+            flex: 1;
+            min-width: 0;
+            max-height: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .set-images-container>img {
-            border-radius: 12px !important;
+            border-radius: 8px !important;
         }
 
         .set-mini-img {
             width: 100%;
-            height: auto;
-            aspect-ratio: 1;
+            height: 100%;
             object-fit: cover;
-            border-radius: 12px !important;
+            border-radius: 8px !important;
             border: 2px solid rgba(0, 0, 0, 0.1);
-            flex: 1;
-            overflow: hidden;
+            display: block;
         }
 
         .cart-item {
@@ -1236,10 +1242,10 @@
         }
 
         .menu-item-image {
-            width: 130px;
-            height: 130px;
+            width: 180px;
+            height: 180px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 10px;
             flex-shrink: 0;
             border: 3px solid #fff;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
@@ -1288,6 +1294,113 @@
 
         .modal .action-btn .edge {
             background: linear-gradient(to right, #25a333 0%, #2ECC40 8%, #25a333 92%, #1d7f28 100%);
+        }
+
+        /* Receipt Modal - Fullscreen overlay */
+        .receipt-modal-overlay {
+            background: rgba(0, 0, 0, 0.75) !important;
+            z-index: 3000 !important;
+        }
+
+        .receipt-modal-content {
+            max-width: 450px;
+            background: transparent;
+            padding: 20px;
+            overflow: visible;
+        }
+
+        .receipt {
+            font-family: 'NH', Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+            /* Torn/perforated edges using linear gradients */
+            background:
+                linear-gradient(135deg, transparent 5.68px, white 5.69px) top left,
+                linear-gradient(45deg, white 2.8px, transparent 2.81px) top left,
+                linear-gradient(135deg, white 2.8px, transparent 2.81px) bottom left,
+                linear-gradient(45deg, transparent 5.68px, white 5.69px) bottom left;
+            background-repeat: repeat-x, repeat-x, repeat-x, repeat-x;
+            background-size: 8px 4px, 8px 4px, 8px 4px, 8px 4px;
+            background-position: top left, top left, bottom left, bottom left;
+            padding: 4px 0;
+        }
+
+        .receipt-inner {
+            background-color: white;
+            padding: 20px;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .receipt-header h2 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .receipt-divider {
+            margin: 10px 0;
+            color: #999;
+            text-align: center;
+            letter-spacing: 2px;
+            font-size: 12px;
+        }
+
+        .receipt-items {
+            margin: 10px 0;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .receipt-item-name {
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        .receipt-totals {
+            margin: 12px 0 8px 0;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .receipt-total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .receipt-change {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2ECC40;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .receipt-footer p {
+            margin: 3px 0;
         }
 
         /* Product Confirmation Modal */
@@ -1360,8 +1473,50 @@
             margin: 2px 0 6px 0;
         }
 
+        .product-modal-set-images {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 5px auto;
+            max-width: 300px;
+        }
+
+        .product-modal-set-images .set-img-item {
+            flex: 1;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+
+        .product-modal-set-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-modal-set-ingredients {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .product-modal-set-ingredients .ingredient-item {
+            padding: 4px 0;
+            color: #555;
+        }
+
+        .product-modal-set-ingredients .ingredient-label {
+            font-weight: 600;
+            color: #333;
+            margin-right: 5px;
+        }
+
         .quantity-selector {
-            margin: 6px 0;
+            display: none;
         }
 
         .quantity-selector label {
@@ -1752,8 +1907,39 @@
                 <div id="menuContent"></div>
             </div>
         </div>
+
     </div>
     <!-- End Main App -->
+
+    <!-- Receipt Modal (Outside main app for fullscreen) -->
+    <div class="modal receipt-modal-overlay" id="receiptModal">
+        <div class="modal-content receipt-modal-content">
+            <div class="receipt">
+                <div class="receipt-inner">
+                    <div class="receipt-header">
+                        <h2 id="receiptRestaurantName"></h2>
+                        <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
+                    </div>
+                    <div class="receipt-items" id="receiptItems"></div>
+                    <div class="receipt-divider">- - - - - - - - - - - - - - - - - - - -</div>
+                    <div class="receipt-totals">
+                        <div class="receipt-row receipt-total"><span>Total:</span><span id="receiptTotal"></span>
+                        </div>
+                        <div class="receipt-row receipt-change"><span>Change:</span><span id="receiptChange"></span>
+                        </div>
+                    </div>
+                    <div class="receipt-footer">
+                        <p>Thank you!</p>
+                    </div>
+                </div>
+            </div>
+            <button class="pushable action-btn" onclick="closeReceipt()" style="margin-top: 20px;">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">Close</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Modal for creating new sets -->
     <div class="modal" id="setModal">
@@ -1767,10 +1953,12 @@
     <div class="modal" id="productModal">
         <div class="modal-content product-modal-content">
             <button class="modal-close" onclick="closeProductModal()">✕</button>
-            <div class="product-modal-img-wrapper">
+            <div class="product-modal-img-wrapper" id="productModalImageWrapper">
                 <img id="productModalImage" src="" alt="" class="product-modal-image">
             </div>
+            <div id="productModalSetImages" class="product-modal-set-images" style="display: none;"></div>
             <h2 id="productModalName" class="product-modal-name"></h2>
+            <div id="productModalSetIngredients" class="product-modal-set-ingredients" style="display: none;"></div>
             <p id="productModalPrice" class="product-modal-price"></p>
             <div class="quantity-selector">
                 <label>How many?</label>
@@ -1791,7 +1979,7 @@
             <button class="pushable action-btn confirm-btn" onclick="confirmProductSelection()">
                 <span class="shadow"></span>
                 <span class="edge"></span>
-                <span class="front">Add to Order</span>
+                <span class="front">Confirm Selection</span>
             </button>
         </div>
     </div>
@@ -1875,9 +2063,9 @@
             } else if (product.items) { // If it's a set
                 frontContent = `
                     <div class="set-images-container">
-                        <div class="product-img-wrapper"><img src="${product.items[0]?.image || '/api/placeholder/32/32'}" alt="main" class="set-mini-img"></div>
-                        <div class="product-img-wrapper"><img src="${product.items[1]?.image || '/api/placeholder/32/32'}" alt="dessert" class="set-mini-img"></div>
-                        <div class="product-img-wrapper"><img src="${product.items[2]?.image || '/api/placeholder/32/32'}" alt="drink" class="set-mini-img"></div>
+                        ${product.items && product.items[0] ? `<div class="product-img-wrapper"><img src="${product.items[0].image}" alt="main" class="set-mini-img"></div>` : ''}
+                        ${product.items && product.items[1] ? `<div class="product-img-wrapper"><img src="${product.items[1].image}" alt="dessert" class="set-mini-img"></div>` : ''}
+                        ${product.items && product.items[2] ? `<div class="product-img-wrapper"><img src="${product.items[2].image}" alt="drink" class="set-mini-img"></div>` : ''}
                     </div>
                     <span class="product-name">${product.name}</span>
                     <span class="product-price">¥${product.price}</span>
@@ -1899,6 +2087,14 @@
             `;
 
             btn.onclick = isNewSet ? openSetModal : () => handleProductClick(product);
+
+            // Disable product buttons when guided mode is complete
+            if (!guidedModeActive && !isNewSet) {
+                btn.style.opacity = '0.5';
+                btn.style.cursor = 'not-allowed';
+                btn.style.pointerEvents = 'none';
+            }
+
             return btn;
         }
 
@@ -1919,13 +2115,18 @@
                     const isActive = currentCategory === category;
                     const categoryIndex = guidedOrder.indexOf(category);
                     const isCompleted = guidedModeActive && categoryIndex >= 0 && categoryIndex < currentGuidedStep;
-                    const isDisabled = guidedModeActive && category !== 'set' && category !== guidedOrder[currentGuidedStep];
-                    
+
+                    // Disable Sets tab if user has started individual item flow (selected a main)
+                    const hasStartedIndividualFlow = currentGuidedStep > 0;
+                    const isSetDisabled = category === 'set' && hasStartedIndividualFlow;
+
+                    const isDisabled = (guidedModeActive && category !== 'set' && category !== guidedOrder[currentGuidedStep]) || isSetDisabled;
+
                     let className = 'pushable category-nav-btn';
                     if (isActive) className += ' active';
                     if (isCompleted) className += ' completed';
                     if (isDisabled) className += ' disabled';
-                    
+
                     navBtn.className = className;
                     navBtn.innerHTML = `
                         <span class="shadow"></span>
@@ -1933,7 +2134,10 @@
                         <span class="front">${isCompleted ? '✓ ' : ''}${category.charAt(0).toUpperCase() + category.slice(1)}${category === 'set' ? 's' : ''}</span>
                     `;
                     navBtn.onclick = () => {
-                        // Allow Set category anytime, otherwise respect guided mode
+                        // Disable Sets if user has started individual flow
+                        if (isSetDisabled) return;
+
+                        // Allow Set category at start, otherwise respect guided mode
                         if (category === 'set' || !guidedModeActive || category === guidedOrder[currentGuidedStep]) {
                             currentCategory = category;
                             renderProducts();
@@ -2021,12 +2225,16 @@
             content = `
             <div class="modal-title">${title}</div>
             <div class="modal-grid">
-                ${items.map(item => `
-                    <div class="modal-item ${newSetSelections[currentSetStep]?.id === item.id ? 'selected' : ''}"
-                         onclick="selectSetItem('${item.id}')">
-                        ${item.name}<br>¥${item.price}
-                    </div>
-                `).join('')}
+                ${items.map(item => {
+                const itemIdentifier = item.id || item.name;
+                const isSelected = newSetSelections[currentSetStep]?.name === item.name;
+                return `
+                        <div class="modal-item ${isSelected ? 'selected' : ''}"
+                             onclick="selectSetItem('${itemIdentifier.replace(/'/g, "\\'")}')">
+                            ${item.name}<br>¥${item.price}
+                        </div>
+                    `;
+            }).join('')}
             </div>
         `;
             modalContent.innerHTML = content;
@@ -2034,8 +2242,11 @@
 
         function selectSetItem(itemId) {
             const items = products[currentSetStep];
-            const selectedItem = items.find(item => item.id === itemId);
+            // Try to find by id first, then by name as fallback
+            const selectedItem = items.find(item => item.id === itemId || item.name === itemId);
             newSetSelections[currentSetStep] = selectedItem;
+
+            console.log('Selected item:', selectedItem, 'for category:', currentSetStep);
 
             if (currentSetStep === 'main') {
                 currentSetStep = 'dessert';
@@ -2120,35 +2331,58 @@
 
         function handleProductClick(product) {
             if (currentStep !== 'select') return;
-            
-            // In guided mode, add directly to cart with quantity 1
-            if (guidedModeActive) {
-                cart.push({ ...product, quantity: 1 });
-                updateCart();
-                updateDisplay();
-                
-                // Move to next category in guided flow
-                if (currentGuidedStep < guidedOrder.length - 1) {
-                    currentGuidedStep++;
-                    currentCategory = guidedOrder[currentGuidedStep];
-                    renderProducts();
-                    updateMessage(`Select a ${currentCategory}`);
-                } else {
-                    // Completed the guided flow
-                    updateMessage('Order complete! Add more items or checkout');
-                    guidedModeActive = false;
-                }
-            } else {
-                // Free mode - open modal for quantity selection
-                selectedProduct = product;
-                modalQuantity = 1;
-                openProductModal(product);
-            }
+
+            // Only allow adding items during guided mode
+            if (!guidedModeActive) return;
+
+            // Show modal for confirmation
+            selectedProduct = product;
+            openProductModal(product);
         }
 
         function openProductModal(product) {
             const modal = document.getElementById('productModal');
-            document.getElementById('productModalImage').src = product.image;
+            const imageWrapper = document.getElementById('productModalImageWrapper');
+            const singleImage = document.getElementById('productModalImage');
+            const setImagesContainer = document.getElementById('productModalSetImages');
+            const setIngredientsContainer = document.getElementById('productModalSetIngredients');
+
+            console.log('Opening modal for product:', product);
+
+            // Check if it's a set
+            if (product.items && product.items.length > 0) {
+                console.log('This is a set with items:', product.items);
+
+                // Hide single image, show set images
+                imageWrapper.style.display = 'none';
+                setImagesContainer.style.display = 'flex';
+                setIngredientsContainer.style.display = 'block';
+
+                // Build set images - filter out undefined/null items
+                const validItems = product.items.filter(item => item && item.image);
+                console.log('Valid items with images:', validItems);
+
+                setImagesContainer.innerHTML = validItems.map(item => `
+                    <div class="set-img-item">
+                        <img src="${item.image}" alt="${item.name}" onerror="console.error('Failed to load image:', '${item.image}')">
+                    </div>
+                `).join('');
+
+                // Build ingredients list
+                const categoryLabels = { 0: 'Main', 1: 'Dessert', 2: 'Drink' };
+                setIngredientsContainer.innerHTML = validItems.map((item, index) => `
+                    <div class="ingredient-item">
+                        <span class="ingredient-label">${categoryLabels[index]}:</span>${item.name}
+                    </div>
+                `).join('');
+            } else {
+                // Show single image, hide set display
+                imageWrapper.style.display = 'flex';
+                setImagesContainer.style.display = 'none';
+                setIngredientsContainer.style.display = 'none';
+                singleImage.src = product.image;
+            }
+
             document.getElementById('productModalName').textContent = product.name;
             document.getElementById('productModalPrice').textContent = `¥${product.price}`;
             document.getElementById('modalQuantity').textContent = modalQuantity;
@@ -2176,12 +2410,37 @@
         }
 
         function confirmProductSelection() {
-            if (selectedProduct && modalQuantity > 0) {
-                cart.push({ ...selectedProduct, quantity: modalQuantity });
+            if (selectedProduct) {
+                // Add to cart with quantity 1
+                cart.push({ ...selectedProduct, quantity: 1 });
                 updateCart();
                 updateDisplay();
                 closeProductModal();
+
+                // Check if it's a set (which already contains main, dessert, and drink)
+                const isSet = selectedProduct.items && selectedProduct.items.length > 0;
+
                 selectedProduct = null;
+
+                if (isSet) {
+                    // Set completes the entire guided flow
+                    guidedModeActive = false;
+                    updateMessage('Order complete! Checkout or start a new order');
+                    renderProducts(); // Re-render to disable all product buttons
+                } else {
+                    // Move to next category in guided flow for individual items
+                    if (currentGuidedStep < guidedOrder.length - 1) {
+                        currentGuidedStep++;
+                        currentCategory = guidedOrder[currentGuidedStep];
+                        renderProducts();
+                        updateMessage(`Select a ${currentCategory}`);
+                    } else {
+                        // Completed the guided flow - disable further selection
+                        guidedModeActive = false;
+                        updateMessage('Order complete! Checkout or start a new order');
+                        renderProducts(); // Re-render to disable all product buttons
+                    }
+                }
             }
         }
 
@@ -2198,17 +2457,53 @@
                 const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const change = payment - total;
                 if (change >= 0) {
-                    const display = document.getElementById('display');
-                    display.textContent = `Your change is: ¥${change}`;  // Show change in display
-                    updateMessage('Thank you for shopping!');
+                    // Show receipt
+                    showReceipt(cart, total, payment, change);
+
+                    // Reset for next order
                     cart = [];
                     currentInput = '';
                     currentStep = 'select';
                     updateCart();
+                    updateDisplay();
+                    updateMessage('Select a main dish');
                 } else {
                     updateMessage('Not enough money! Please pay the full amount.');
                 }
             }
+        }
+
+        function showReceipt(items, total, payment, change) {
+            const modal = document.getElementById('receiptModal');
+
+            // Set restaurant name
+            document.getElementById('receiptRestaurantName').textContent = currentRestaurant.name;
+
+            // Build items list
+            const itemsHtml = items.map(item => `
+                <div class="receipt-item">
+                    <span class="receipt-item-name">${item.name} x${item.quantity}</span>
+                    <span class="receipt-item-price">¥${item.price * item.quantity}</span>
+                </div>
+            `).join('');
+            document.getElementById('receiptItems').innerHTML = itemsHtml;
+
+            // Set totals
+            document.getElementById('receiptTotal').textContent = `¥${total}`;
+            document.getElementById('receiptChange').textContent = `¥${change}`;
+
+            modal.classList.add('active');
+        }
+
+        function closeReceipt() {
+            document.getElementById('receiptModal').classList.remove('active');
+
+            // Reset to beginning of guided flow
+            guidedModeActive = true;
+            currentGuidedStep = 0;
+            currentCategory = 'main';
+            renderProducts();
+            updateMessage('Select a main dish');
         }
 
 
@@ -2268,6 +2563,14 @@
             currentRestaurant = restaurants[restaurantKey];
             products = JSON.parse(JSON.stringify(currentRestaurant.products)); // Deep clone
 
+            // Reset cart and guided mode when switching restaurants
+            cart = [];
+            currentStep = 'select';
+            currentInput = '';
+            selectedProduct = null;
+            guidedModeActive = true;
+            currentGuidedStep = 0;
+
             // Update image paths to use restaurant folder
             Object.keys(products).forEach(category => {
                 if (products[category]) {
@@ -2278,8 +2581,8 @@
                 }
             });
 
-            // Reset to first available category
-            currentCategory = categoryOrder.find(cat => products[cat] && products[cat].length > 0) || 'main';
+            // Reset to first available category (main)
+            currentCategory = 'main';
 
             // Apply theme
             applyTheme(currentRestaurant.theme);
@@ -2295,6 +2598,11 @@
 
             // Initialize the app
             initializeApp();
+
+            // Reset display and message
+            updateCart();
+            updateDisplay();
+            updateMessage('Select a main dish');
         }
 
         function applyTheme(theme) {
@@ -2308,6 +2616,34 @@
                 .register { background: ${theme.registerPanel} !important; }
                 .cart-container { background: ${theme.cartPanel} !important; }
                 .header h1 { text-shadow: 3px 3px 0 ${theme.secondary} !important; }
+                
+                /* Scrollbar theming */
+                .products::-webkit-scrollbar-thumb {
+                    background: linear-gradient(180deg, ${theme.primary} 0%, ${theme.secondary} 100%) !important;
+                    border: 3px solid ${theme.productsPanel} !important;
+                }
+                
+                .products::-webkit-scrollbar-thumb:hover {
+                    background: linear-gradient(180deg, ${theme.secondary} 0%, ${theme.primary} 100%) !important;
+                }
+                
+                .cart::-webkit-scrollbar-thumb {
+                    background: linear-gradient(180deg, ${theme.primary} 0%, ${theme.secondary} 100%) !important;
+                    border: 3px solid ${theme.cartPanel} !important;
+                }
+                
+                .cart::-webkit-scrollbar-thumb:hover {
+                    background: linear-gradient(180deg, ${theme.secondary} 0%, ${theme.primary} 100%) !important;
+                }
+                
+                /* Firefox scrollbar colors */
+                .products {
+                    scrollbar-color: ${theme.primary} rgba(0, 0, 0, 0.1) !important;
+                }
+                
+                .cart {
+                    scrollbar-color: ${theme.primary} rgba(0, 0, 0, 0.1) !important;
+                }
             `;
 
             // Remove old theme if exists
@@ -2323,6 +2659,11 @@
             currentStep = 'select';
             currentInput = '';
             selectedProduct = null;
+
+            // Reset guided mode
+            guidedModeActive = true;
+            currentGuidedStep = 0;
+            currentCategory = 'main';
 
             // Hide main app, show selection
             document.getElementById('mainApp').classList.remove('active');
