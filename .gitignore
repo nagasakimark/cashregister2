@@ -1,0 +1,27 @@
+# Development files
+fix-prices.js
+restaurants.txt
+
+# Documentation (not needed for deployment)
+CHANGELOG.md
+
+# Archives
+*.7z
+*.zip
+*.rar
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Unused images
+riceball.png
+cashregister.png
+
+# Node modules (if any)
+node_modules/

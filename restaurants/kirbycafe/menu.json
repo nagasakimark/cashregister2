@@ -1,0 +1,202 @@
+{
+  "name": "Kirby Café",
+  "icon": "⭐",
+  "description": "Cute & Delicious Kirby-themed Dishes",
+  "theme": {
+    "primary": "#ff69b4",
+    "secondary": "#ff1493",
+    "gradient": "linear-gradient(179deg, rgba(255, 105, 180, 0.9) 9.6%, rgba(255, 20, 147, 0.8) 50.1%)",
+    "productsPanel": "#ffb6d9",
+    "registerPanel": "#ffd4e5",
+    "cartPanel": "#ffe4f0"
+  },
+  "categories": {
+    "set": [],
+    "main": [
+      {
+        "id": "main1",
+        "name": "Kirby Burger",
+        "price": 503,
+        "image": "products/main/burger.jpg"
+      },
+      {
+        "id": "main2",
+        "name": "Omelet Rice",
+        "price": 383,
+        "image": "products/main/omelet rice.webp"
+      },
+      {
+        "id": "main3",
+        "name": "Curry",
+        "price": 431,
+        "image": "products/main/curry.webp"
+      },
+      {
+        "id": "main4",
+        "name": "Four Cheese Pizza",
+        "price": 495,
+        "image": "products/main/four cheese pizza.webp"
+      },
+      {
+        "id": "main5",
+        "name": "Seafood Pizza",
+        "price": 490,
+        "image": "products/main/seafood pizza.webp"
+      },
+      {
+        "id": "main6",
+        "name": "Tomato Pizza",
+        "price": 462,
+        "image": "products/main/tomato pizza.webp"
+      },
+      {
+        "id": "main7",
+        "name": "Hot Dog",
+        "price": 499,
+        "image": "products/main/hot dog.jpg"
+      },
+      {
+        "id": "main8",
+        "name": "Sushi",
+        "price": 394,
+        "image": "products/main/sushi.webp"
+      },
+      {
+        "id": "main9",
+        "name": "Stew",
+        "price": 488,
+        "image": "products/main/stew.webp"
+      },
+      {
+        "id": "main10",
+        "name": "Soup",
+        "price": 475,
+        "image": "products/main/soup.png"
+      },
+      {
+        "id": "main11",
+        "name": "Salad",
+        "price": 432,
+        "image": "products/main/salad.jpg"
+      },
+      {
+        "id": "main12",
+        "name": "French Fries",
+        "price": 382,
+        "image": "products/main/french fries.webp"
+      },
+      {
+        "id": "main13",
+        "name": "Cheese Fries",
+        "price": 400,
+        "image": "products/main/cheese fries.webp"
+      },
+      {
+        "id": "main14",
+        "name": "Skewers",
+        "price": 448,
+        "image": "products/main/skewers.webp"
+      },
+      {
+        "id": "main15",
+        "name": "Star Bread",
+        "price": 520,
+        "image": "products/main/bread.webp"
+      }
+    ],
+    "dessert": [
+      {
+        "id": "dessert1",
+        "name": "Pancake",
+        "price": 262,
+        "image": "products/dessert/pancake.webp"
+      },
+      {
+        "id": "dessert2",
+        "name": "Car Cake",
+        "price": 240,
+        "image": "products/dessert/car cake.webp"
+      },
+      {
+        "id": "dessert3",
+        "name": "Takoyaki Cake",
+        "price": 214,
+        "image": "products/dessert/takoyaki cake.webp"
+      },
+      {
+        "id": "dessert4",
+        "name": "Strawberry Tart",
+        "price": 221,
+        "image": "products/dessert/strawberry tart.jpg"
+      },
+      {
+        "id": "dessert5",
+        "name": "Tiramisu",
+        "price": 211,
+        "image": "products/dessert/tiramisu.webp"
+      },
+      {
+        "id": "dessert6",
+        "name": "Parfait",
+        "price": 211,
+        "image": "products/dessert/parfait.webp"
+      },
+      {
+        "id": "dessert7",
+        "name": "Candy Parfait",
+        "price": 222,
+        "image": "products/dessert/candy parfait.jpg"
+      },
+      {
+        "id": "dessert8",
+        "name": "Chocolate Parfait",
+        "price": 258,
+        "image": "products/dessert/chocolate parfait.webp"
+      },
+      {
+        "id": "dessert9",
+        "name": "Peach Parfait",
+        "price": 226,
+        "image": "products/dessert/peach parfait.webp"
+      },
+      {
+        "id": "dessert10",
+        "name": "Frying Pan Parfait",
+        "price": 254,
+        "image": "products/dessert/frying pan parfait.jpg"
+      },
+      {
+        "id": "dessert11",
+        "name": "Sorbet",
+        "price": 200,
+        "image": "products/dessert/sorbet.webp"
+      }
+    ],
+    "drink": [
+      {
+        "id": "drink1",
+        "name": "Coffee",
+        "price": 105,
+        "image": "products/drink/coffee.webp"
+      },
+      {
+        "id": "drink2",
+        "name": "Marshmallow Coffee",
+        "price": 119,
+        "image": "products/drink/marshmallow coffee.webp"
+      },
+      {
+        "id": "drink3",
+        "name": "Orange Juice",
+        "price": 145,
+        "image": "products/drink/orange juice.webp"
+      },
+      {
+        "id": "drink4",
+        "name": "Apple Cinnamon Juice",
+        "price": 133,
+        "image": "products/drink/apple cinammon juice.webp"
+      }
+    ]
+  }
+}

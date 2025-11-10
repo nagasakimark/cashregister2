@@ -1,0 +1,177 @@
+{
+  "name": "Pokemon Cafe",
+  "icon": "⚡",
+  "description": "Gotta Eat 'Em All!",
+  "theme": {
+    "primary": "#ffcc00",
+    "secondary": "#cc0000",
+    "gradient": "linear-gradient(179deg, rgba(255, 204, 0, 0.9) 9.6%, rgba(255, 220, 51, 0.8) 50.1%)",
+    "productsPanel": "#fff9e6",
+    "registerPanel": "#ffe680",
+    "cartPanel": "#ffeb99"
+  },
+  "categories": {
+    "set": [],
+    "main": [
+      {
+        "name": "Bolognese",
+        "price": 473,
+        "image": "products/main/bolognese.png"
+      },
+      {
+        "name": "Carbonara",
+        "price": 475,
+        "image": "products/main/carbonara.jpg"
+      },
+      {
+        "name": "Chicken Burger",
+        "price": 415,
+        "image": "products/main/chicken burger.jpg"
+      },
+      {
+        "name": "Curry",
+        "price": 472,
+        "image": "products/main/curry.jpg"
+      },
+      {
+        "name": "French Fries",
+        "price": 431,
+        "image": "products/main/french fries.png"
+      },
+      {
+        "name": "Hamburg Doria",
+        "price": 488,
+        "image": "products/main/Hamburg Doria.jpg"
+      },
+      {
+        "name": "Hamburger",
+        "price": 471,
+        "image": "products/main/hamburger.webp"
+      },
+      {
+        "name": "Mapo Tofu",
+        "price": 513,
+        "image": "products/main/mapo tofu.webp"
+      },
+      {
+        "name": "Pasta",
+        "price": 443,
+        "image": "products/main/pasta.jpg"
+      },
+      {
+        "name": "Pizza",
+        "price": 478,
+        "image": "products/main/pizza.avif"
+      },
+      {
+        "name": "Salad",
+        "price": 389,
+        "image": "products/main/salad.webp"
+      },
+      {
+        "name": "Sandwich",
+        "price": 428,
+        "image": "products/main/sandwich.jpg"
+      },
+      {
+        "name": "Sushi",
+        "price": 440,
+        "image": "products/main/sushi.webp"
+      }
+    ],
+    "dessert": [
+      {
+        "name": "Cheesecake",
+        "price": 237,
+        "image": "products/dessert/cheese ake.jpg"
+      },
+      {
+        "name": "Chocolate Banana Crepe",
+        "price": 247,
+        "image": "products/dessert/chocolate banana crepe.jpg"
+      },
+      {
+        "name": "Chocolate Parfait",
+        "price": 275,
+        "image": "products/dessert/chocolate parfait.jpg"
+      },
+      {
+        "name": "Cream Puff",
+        "price": 214,
+        "image": "products/dessert/cream puff.png"
+      },
+      {
+        "name": "Doughnut",
+        "price": 216,
+        "image": "products/dessert/doughnut.jpg"
+      },
+      {
+        "name": "Fruit Pudding",
+        "price": 242,
+        "image": "products/dessert/Fruit pudding.jpg"
+      },
+      {
+        "name": "Ice Cream",
+        "price": 205,
+        "image": "products/dessert/ice cream.jpg"
+      },
+      {
+        "name": "Pancake",
+        "price": 223,
+        "image": "products/dessert/pancake.jpg"
+      },
+      {
+        "name": "Parfait",
+        "price": 252,
+        "image": "products/dessert/parfait.jpg"
+      }
+    ],
+    "drink": [
+      {
+        "name": "Black Coffee",
+        "price": 144,
+        "image": "products/drink/black coffee.jpg"
+      },
+      {
+        "name": "Coffee Latte",
+        "price": 120,
+        "image": "products/drink/coffee latte.jpg"
+      },
+      {
+        "name": "Coffee",
+        "price": 163,
+        "image": "products/drink/coffee.png"
+      },
+      {
+        "name": "Fruit Tea",
+        "price": 142,
+        "image": "products/drink/fruit tea.jpg"
+      },
+      {
+        "name": "Iced Tea",
+        "price": 104,
+        "image": "products/drink/iced tea.jpg"
+      },
+      {
+        "name": "Milk Tea",
+        "price": 111,
+        "image": "products/drink/milk tea.jpg"
+      },
+      {
+        "name": "Milk",
+        "price": 117,
+        "image": "products/drink/milk.jpg"
+      },
+      {
+        "name": "Smoothie",
+        "price": 142,
+        "image": "products/drink/smoothie.jpg"
+      },
+      {
+        "name": "Soda",
+        "price": 145,
+        "image": "products/drink/soda.jpg"
+      }
+    ]
+  }
+}

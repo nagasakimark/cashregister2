@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Restaurant</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* Restaurant Selection Screen Styles */
+        .restaurant-selection {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(179deg, #f0f4f8 0%, #d9e2ec 100%);
+            padding: 20px;
+        }
+
+        .restaurant-selection h1 {
+            color: #334155;
+            font-size: 3em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .restaurant-card {
+            position: relative;
+            background: transparent;
+            border-radius: 15px;
+            padding: 0;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            min-height: 200px;
+        }
+
+        .restaurant-card .shadow {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+        }
+
+        .restaurant-card .edge {
+            border-radius: 15px;
+            background: linear-gradient(to right, #d9d9d9 0%, #f5f5f5 8%, #d9d9d9 92%, #c0c0c0 100%);
+        }
+
+        .restaurant-card .front {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            color: #333;
+            font-weight: bold;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .restaurant-card:hover {
+            filter: brightness(105%);
+        }
+
+        .restaurant-card h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .restaurant-card p {
+            color: #666;
+            font-size: 1.1em;
+            margin: 0;
+        }
+
+        .restaurant-card .icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .restaurant-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        #mainApp {
+            display: none;
+            flex-direction: column;
+            padding: 10px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #mainApp.active {
+            display: flex;
+        }
+
+        body.restaurant-active {
+            background-color: #ffbb00;
+            background-image: linear-gradient(179deg, rgba(255, 196, 2, 0.9) 9.6%, rgba(243, 206, 71, 0.8) 50.1%);
+        }
+
+        @font-face {
+            font-family: 'NH';
+            src: url('nh.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'DS-Digital';
+            src: url('dsdigi.ttf') format('truetype');
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'NH', Arial, sans-serif;
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            position: relative;
+            flex-shrink: 0;
+            min-height: 60px;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+            color: #fff;
+            text-shadow: 3px 3px 0 #e8a702;
+            flex: 1;
+            text-align: center;
+        }
+
+        .back-btn {
+            padding: 0;
+            width: auto !important;
+            height: 40px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .back-btn .shadow {
+            border-radius: 8px;
+        }
+
+        .back-btn .edge {
+            background: linear-gradient(to right, #d9d9d9 0%, #f0f0f0 8%, #d9d9d9 92%, #c0c0c0 100%);
+            border-radius: 8px;
+        }
+
+        .back-btn .front {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .qr-btn {
+            padding: 0;
+            width: auto !important;
+            height: 40px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .qr-btn .shadow {
+            border-radius: 8px;
+        }
+
+        .qr-btn .edge {
+            background: linear-gradient(to right, #d9d9d9 0%, #f0f0f0 8%, #d9d9d9 92%, #c0c0c0 100%);
+            border-radius: 8px;
+        }
+
+        .qr-btn .front {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .container {
+            display: flex;
+            gap: 15px;
+            flex: 1;
+            padding: 0 10px 10px 10px;
+            min-height: 0;
+            overflow: hidden;
+            height: calc(100vh - 70px);
+        }
+
+        .products {
+            flex: 1;
+            background: #FFE066;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-height: 100%;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .products h2 {
+            flex-shrink: 0;
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+
+        #productsContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: visible;
+        }
+
+        .register-section {
+            display: flex;
+            gap: 15px;
+            flex: 1.5;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .register {
+            display: flex;
+            flex-direction: column;
+            flex: 2;
+            background: #98f59e;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .register h2 {
+            margin: 0 0 10px 0;
+            flex-shrink: 0;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .register-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .cart-container {
+            flex: 1.3;
+            background: #87CEEB;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            min-height: 0;
+        }
+
+        .cart-container h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+
+        .cart {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            min-height: 0;
+        }
+
+        .category-nav {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            flex-wrap: nowrap;
+            flex-shrink: 0;
+            overflow-x: auto;
+        }
+
+        .category-nav-btn {
+            padding: 0;
+            flex: 1;
+            min-width: 75px;
+            height: 45px;
+            margin-top: 0;
+            position: relative;
+        }
+
+        .category-nav-btn .shadow {
+            border-radius: 10px;
+        }
+
+        .category-nav-btn .edge {
+            border-radius: 10px;
+            background: linear-gradient(to right, #b8b8b8 0%, #d0d0d0 8%, #b8b8b8 92%, #a0a0a0 100%);
+        }
+
+        .category-nav-btn .front {
+            background: #e0e0e0;
+            color: #333;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .category-nav-btn.active .edge {
+            background: linear-gradient(to right, #25a333 0%, #2ECC40 8%, #25a333 92%, #1d7f28 100%);
+        }
+
+        .category-nav-btn.active .front {
+            background: #2ECC40;
+            color: white;
+        }
+
+        .category-nav-btn.completed .front {
+            background: #85e89d;
+            color: white;
+        }
+
+        .category-nav-btn.completed .edge {
+            background: linear-gradient(to right, #5fb876 0%, #85e89d 8%, #5fb876 92%, #4a9660 100%);
+        }
+
+        .category-nav-btn.disabled {
+            pointer-events: none;
+        }
+
+        .category {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            max-height: 100%;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding-right: 10px;
+            padding-top: 4px;
+            padding-bottom: 10px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            align-content: start;
+        }
+
+        .product-btn {
+            padding: 0;
+            width: 100%;
+            aspect-ratio: 1;
+            position: relative;
+        }
+
+        .product-btn .shadow {
+            border-radius: 12px;
+        }
+
+        .product-btn .edge {
+            border-radius: 12px;
+            background: linear-gradient(to right, #d9d9d9 0%, #f5f5f5 8%, #d9d9d9 92%, #c0c0c0 100%);
+        }
+
+        .product-btn .front {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'NH', Arial, sans-serif;
+            color: #333;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .product-btn .front>img {
+            border-radius: 12px !important;
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            max-width: 100%;
+            aspect-ratio: 1;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            flex: 1 1 auto;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .set-images-container .product-img-wrapper {
+            flex: 1;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+        }
+
+        .product-btn.new-set {
+            aspect-ratio: 1;
+        }
+
+        .product-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            object-fit: contain;
+            border-radius: 12px !important;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .product-btn .front span {
+            width: 100%;
+            text-align: center;
+            line-height: 1;
+            font-weight: 600;
+        }
+
+        .product-btn .front .product-name {
+            overflow: visible;
+            text-overflow: clip;
+            font-size: 1.5em;
+            word-wrap: break-word;
+            hyphens: auto;
+            flex: 0 0 auto;
+            padding: 2px 0;
+        }
+
+        .product-btn .front .product-price {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .set-images-container {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .set-images-container>img {
+            border-radius: 12px !important;
+        }
+
+        .set-mini-img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 12px !important;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .total {
+            border-top: 3px solid rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+            padding-top: 15px;
+            font-weight: bold;
+            font-size: 1.4em;
+            color: #333;
+        }
+
+        .display {
+            background: #001f3f;
+            color: #01FF70;
+            padding: 10px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            font-family: 'DS-Digital', monospace;
+            text-align: right;
+            min-height: 50px;
+            border: 3px solid #00172B;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
+        }
+
+        .message {
+            color: #333;
+            margin-bottom: 8px;
+            min-height: 20px;
+            font-size: 1.1em;
+            text-align: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .numpad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 6px;
+            flex: 1;
+            min-height: 0;
+            overflow: visible;
+            padding-top: 5px;
+        }
+
+        .num-btn.num-enter {
+            grid-column: 2;
+        }
+
+        /* Pushable Button Base Styles */
+        .pushable {
+            position: relative;
+            background: transparent;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+
+        .shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            filter: blur(2px);
+            will-change: transform;
+            transform: translateY(2px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+        }
+
+        .edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            border-radius: 12px;
+        }
+
+        .front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            transform: translateY(-4px);
+            transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .pushable:hover {
+            filter: brightness(110%);
+        }
+
+        .pushable:hover .front {
+            transform: translateY(-4px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .front {
+            transform: translateY(-2px) !important;
+            transition: transform 34ms;
+        }
+
+        .pushable:hover .shadow {
+            transform: translateY(3px);
+            transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
+        }
+
+        .pushable:active .shadow {
+            transform: translateY(1px) !important;
+            transition: transform 34ms;
+        }
+
+        .pushable:focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* Touch-specific active states */
+        @media (hover: none) and (pointer: coarse) {
+            .pushable:active .front {
+                transform: translateY(-2px) !important;
+            }
+
+            .pushable:active .shadow {
+                transform: translateY(1px) !important;
+            }
+        }
+
+        /* Ensure all pushable buttons animate */
+        .category-nav-btn.pushable:hover .front,
+        .back-btn.pushable:hover .front,
+        .restaurant-card.pushable:hover .front {
+            transform: translateY(-4px) !important;
+        }
+
+        .category-nav-btn.pushable:active .front,
+        .back-btn.pushable:active .front,
+        .restaurant-card.pushable:active .front {
+            transform: translateY(-2px) !important;
+        }
+
+        .category-nav-btn.pushable:hover .shadow,
+        .back-btn.pushable:hover .shadow,
+        .restaurant-card.pushable:hover .shadow {
+            transform: translateY(3px) !important;
+        }
+
+        .category-nav-btn.pushable:active .shadow,
+        .back-btn.pushable:active .shadow,
+        .restaurant-card.pushable:active .shadow {
+            transform: translateY(1px) !important;
+        }
+
+        .num-btn {
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .num-btn .front {
+            padding: 0;
+            font-size: clamp(2rem, 4.5vw, 3rem) !important;
+            font-weight: bold;
+        }
+
+        /* Number button colors */
+        .num-0 .front,
+        .num-00 .front,
+        .num-000 .front {
+            background: #FF851B;
+        }
+
+        .num-0 .edge,
+        .num-00 .edge,
+        .num-000 .edge {
+            background: linear-gradient(to right, #d66a00 0%, #FF851B 8%, #d66a00 92%, #b85800 100%);
+        }
+
+        .num-1 .front {
+            background: #348ceb;
+        }
+
+        .num-1 .edge {
+            background: linear-gradient(to right, #2670c7 0%, #348ceb 8%, #2670c7 92%, #1e5ca3 100%);
+        }
+
+        .num-2 .front {
+            background: #B10DC9;
+        }
+
+        .num-2 .edge {
+            background: linear-gradient(to right, #8d0aa1 0%, #B10DC9 8%, #8d0aa1 92%, #6f087f 100%);
+        }
+
+        .num-3 .front {
+            background: #19768a;
+        }
+
+        .num-3 .edge {
+            background: linear-gradient(to right, #145e6e 0%, #19768a 8%, #145e6e 92%, #0f4652 100%);
+        }
+
+        .num-4 .front {
+            background: #FF4136;
+        }
+
+        .num-4 .edge {
+            background: linear-gradient(to right, #cc342b 0%, #FF4136 8%, #cc342b 92%, #a82923 100%);
+        }
+
+        .num-5 .front {
+            background: #52a13d;
+        }
+
+        .num-5 .edge {
+            background: linear-gradient(to right, #428131 0%, #52a13d 8%, #428131 92%, #326125 100%);
+        }
+
+        .num-6 .front {
+            background: #F012BE;
+        }
+
+        .num-6 .edge {
+            background: linear-gradient(to right, #c00e98 0%, #F012BE 8%, #c00e98 92%, #960b78 100%);
+        }
+
+        .num-7 .front {
+            background: #FFDC00;
+        }
+
+        .num-7 .edge {
+            background: linear-gradient(to right, #ccb000 0%, #FFDC00 8%, #ccb000 92%, #a38c00 100%);
+        }
+
+        .num-8 .front {
+            background: #85144b;
+        }
+
+        .num-8 .edge {
+            background: linear-gradient(to right, #6a103c 0%, #85144b 8%, #6a103c 92%, #520c2e 100%);
+        }
+
+        .num-9 .front {
+            background: #3D9970;
+        }
+
+        .num-9 .edge {
+            background: linear-gradient(to right, #317a5a 0%, #3D9970 8%, #317a5a 92%, #255b44 100%);
+        }
+
+        .num-enter {
+            grid-column: span 2;
+        }
+
+        .num-enter .front {
+            background: #2ECC40;
+            font-size: clamp(1.4rem, 3.5vw, 2rem) !important;
+        }
+
+        .num-enter .edge {
+            background: linear-gradient(to right, #25a333 0%, #2ECC40 8%, #25a333 92%, #1d7f28 100%);
+        }
+
+        #checkoutBtn {
+            grid-column: span 2;
+        }
+
+        #checkoutBtn .front {
+            background: #0074D9;
+        }
+
+        #checkoutBtn .edge {
+            background: linear-gradient(to right, #005cae 0%, #0074D9 8%, #005cae 92%, #004687 100%);
+        }
+
+        #newOrderBtn .front {
+            background: #FF4136;
+        }
+
+        #newOrderBtn .edge {
+            background: linear-gradient(to right, #cc342b 0%, #FF4136 8%, #cc342b 92%, #a82923 100%);
+        }
+
+        .action-btn {
+            padding: 0;
+            border: none;
+            width: 100%;
+            min-height: 50px;
+        }
+
+        .action-btn .front {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            padding: 12px 24px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .modal-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .modal-item {
+            padding: 10px;
+            border: 2px solid #4ECDC4;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            word-wrap: break-word;
+        }
+
+        .modal-item:hover,
+        .modal-item.selected {
+            background: #4ECDC4;
+            color: white;
+        }
+
+        .set-name-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #4ECDC4;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .qr-modal.active {
+            display: flex;
+        }
+
+        .qr-modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90vw;
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            width: auto;
+            height: auto;
+        }
+
+        /* Menu Mode Modal */
+        .menu-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .menu-modal.active {
+            display: flex;
+        }
+
+        .menu-modal-content {
+            background: #f8f5f0;
+            padding: 40px;
+            border-radius: 12px;
+            width: 95vw;
+            max-width: 1200px;
+            height: 90vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            font-family: 'Georgia', serif;
+            transition: background 0.3s;
+        }
+
+        /* Fix scrollbar to not interfere with rounded corners */
+        .menu-modal-content::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .menu-modal-content::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 12px 0;
+        }
+
+        .menu-modal-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .menu-modal-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+            background-clip: padding-box;
+        }
+
+        /* Restaurant-specific menu themes */
+        .menu-modal-content.theme-pokemon {
+            background: linear-gradient(135deg, #fff9e6 0%, #fffef0 100%);
+            position: relative;
+        }
+
+        .menu-modal-content.theme-pokemon::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            width: 180px;
+            height: 180px;
+            background-image: url('restaurants/pokemon/chefpikachu.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.50;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-modal-content.theme-pokemon>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-modal-content.theme-pokemon .menu-header h1 {
+            color: #cc0000;
+            text-shadow: 2px 2px 0 #ffcc00;
+        }
+
+        .menu-modal-content.theme-pokemon .menu-tab.active {
+            border-bottom-color: #ffcc00;
+            color: #cc0000;
+        }
+
+        .menu-modal-content.theme-pokemon .menu-item:hover {
+            background: rgba(255, 204, 0, 0.15);
+        }
+
+        .menu-modal-content.theme-kirbycafe {
+            background: linear-gradient(135deg, #fff0f8 0%, #ffe4f0 100%);
+            position: relative;
+        }
+
+        .menu-modal-content.theme-kirbycafe::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 40px;
+            width: 140px;
+            height: 140px;
+            background-image: url('restaurants/kirbycafe/chefkirby.webp');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.50;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .menu-modal-content.theme-kirbycafe>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-modal-content.theme-kirbycafe .menu-header h1 {
+            color: #ff1493;
+            text-shadow: 2px 2px 0 #ffb6d9;
+        }
+
+        .menu-modal-content.theme-kirbycafe .menu-tab.active {
+            border-bottom-color: #ff69b4;
+            color: #ff1493;
+        }
+
+        .menu-modal-content.theme-kirbycafe .menu-item:hover {
+            background: rgba(255, 105, 180, 0.15);
+        }
+
+        .menu-modal-content.theme-kirbycafe .menu-item-image {
+            border-color: #ffb6d9;
+        }
+
+        .menu-modal-content.theme-rilakkuma {
+            background: linear-gradient(135deg, #faf6f0 0%, #f5ede0 100%);
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 115, 85, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #faf6f0 0%, #f5ede0 100%);
+        }
+
+        .menu-modal-content.theme-rilakkuma .menu-header {
+            border-bottom-color: #d4a574;
+        }
+
+        .menu-modal-content.theme-rilakkuma .menu-header h1 {
+            color: #8b7355;
+        }
+
+        .menu-modal-content.theme-rilakkuma .menu-tab.active {
+            border-bottom-color: #d4a574;
+            color: #8b7355;
+        }
+
+        .menu-modal-content.theme-rilakkuma .menu-item {
+            border-bottom-color: #d4a574;
+        }
+
+        .menu-modal-content.theme-rilakkuma .menu-item:hover {
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .menu-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .menu-close:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .menu-header {
+            text-align: center;
+            border-bottom: 3px double #8b7355;
+            padding-bottom: 20px;
+            margin-bottom: 10px;
+        }
+
+        .menu-header h1 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            color: #2c1810;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .menu-header p {
+            font-size: 1.1em;
+            color: #6b5d52;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .menu-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 25px 0 35px 0;
+            border-bottom: 2px solid #d4a574;
+            padding-bottom: 0;
+        }
+
+        .menu-tab {
+            background: transparent;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.3em;
+            color: #6b5d52;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            position: relative;
+        }
+
+        .menu-tab:hover {
+            color: #2c1810;
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .menu-tab.active {
+            color: #2c1810;
+            border-bottom-color: #8b7355;
+            font-weight: 600;
+        }
+
+        .menu-category {
+            display: none;
+            margin-bottom: 40px;
+        }
+
+        .menu-category.active {
+            display: block;
+        }
+
+        .menu-category-title {
+            font-size: 2em;
+            color: #2c1810;
+            border-bottom: 2px solid #8b7355;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px 25px;
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: transparent;
+            border-bottom: 2px dotted #d4a574;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .menu-item:nth-child(4n+1),
+        .menu-item:nth-child(4n+4) {
+            margin-top: 0;
+        }
+
+        .menu-item:nth-child(4n+2),
+        .menu-item:nth-child(4n+3) {
+            margin-top: 40px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.5);
+            border-bottom-color: #8b7355;
+        }
+
+        .menu-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .menu-item-image {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+            border: 3px solid #fff;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .menu-item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 5px 0;
+        }
+
+        .menu-item-name {
+            font-size: 1.6em;
+            color: #2c1810;
+            margin: 0 0 12px 0;
+            font-weight: 500;
+            line-height: 1.2;
+            font-family: 'Georgia', serif;
+        }
+
+        .menu-item-price {
+            font-size: 1.5em;
+            color: #8b7355;
+            font-weight: 600;
+            margin: 0;
+            font-family: 'Georgia', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-item-price::before {
+            content: '¥';
+            margin-right: 2px;
+        }
+
+        @media (max-width: 900px) {
+            .menu-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .modal .action-btn .front {
+            background: #2ECC40;
+        }
+
+        .modal .action-btn .edge {
+            background: linear-gradient(to right, #25a333 0%, #2ECC40 8%, #25a333 92%, #1d7f28 100%);
+        }
+
+        /* Product Confirmation Modal */
+        .product-modal-content {
+            max-width: 400px;
+            max-height: 95vh;
+            text-align: center;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .product-modal-img-wrapper {
+            width: 100%;
+            max-width: 240px;
+            max-height: 240px;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            margin: 5px auto 5px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+        }
+
+        .product-modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .product-modal-name {
+            font-size: 1.6em;
+            margin: 3px 0;
+            color: #333;
+            line-height: 1.1;
+        }
+
+        .product-modal-price {
+            font-size: 1.5em;
+            color: #2ECC40;
+            font-weight: bold;
+            margin: 2px 0 6px 0;
+        }
+
+        .quantity-selector {
+            margin: 6px 0;
+        }
+
+        .quantity-selector label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+        }
+
+        .quantity-btn .shadow {
+            border-radius: 10px;
+        }
+
+        .quantity-btn .edge {
+            border-radius: 10px;
+            background: linear-gradient(to right, #2670c7 0%, #348ceb 8%, #2670c7 92%, #1e5ca3 100%);
+        }
+
+        .quantity-btn .front {
+            background: #348ceb;
+            border-radius: 10px;
+            font-size: 1.6em;
+            padding: 0;
+        }
+
+        .quantity-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .confirm-btn .front {
+            font-size: 1.2em;
+        }
+
+        .register-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Explicitly set to two equal columns */
+            gap: 6px;
+            margin-top: 6px;
+            width: 100%;
+        }
+
+        #checkoutBtn {
+            grid-column: 1;
+            /* Explicitly place checkout button in first column */
+        }
+
+        #newOrderBtn {
+            grid-column: 2;
+            /* Explicitly place new order button in second column */
+        }
+
+
+        #checkoutBtn,
+        #newOrderBtn {
+            width: 100%;
+            height: 100%;
+            min-height: 38px;
+            grid-row: 1;
+            /* Ensure both buttons are in the first row */
+        }
+
+        #checkoutBtn .front,
+        #newOrderBtn .front {
+            font-size: clamp(1.3rem, 3.5vw, 1.8rem) !important;
+            padding: 12px 24px;
+        }
+
+        /* Add custom scrollbar styling for the products area */
+        .products::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .products::-webkit-scrollbar-track {
+            background: rgba(255, 224, 102, 0.3);
+            border-radius: 10px;
+            margin: 8px 0;
+        }
+
+        .products::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ffbb00 0%, #e8a702 100%);
+            border: 3px solid #FFE066;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .products::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #e8a702 0%, #d69602 100%);
+        }
+
+        /* For Firefox */
+        .products {
+            scrollbar-width: thin;
+            scrollbar-color: #ffbb00 rgba(255, 224, 102, 0.3);
+        }
+
+        /* Also style the cart area scrollbar for consistency */
+        .cart::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .cart::-webkit-scrollbar-track {
+            background: rgba(135, 206, 235, 0.3);
+            border-radius: 10px;
+            margin: 8px 0;
+        }
+
+        .cart::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #5fb8e0 0%, #4a9cc2 100%);
+            border: 3px solid #87CEEB;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .cart::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #4a9cc2 0%, #3d89ab 100%);
+        }
+
+        /* For Firefox */
+        .cart {
+            scrollbar-width: thin;
+            scrollbar-color: #5fb8e0 rgba(135, 206, 235, 0.3);
+        }
+
+        @media screen and (max-height: 800px) {
+            .header {
+                min-height: 50px;
+                padding: 5px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .back-btn {
+                height: 36px;
+            }
+
+            .container {
+                height: calc(100vh - 60px);
+            }
+
+            .register {
+                padding: 10px;
+            }
+
+            .numpad {
+                gap: 8px;
+            }
+
+            .display {
+                min-height: 45px;
+                margin-bottom: 8px;
+                font-size: 1.5rem;
+                padding: 10px;
+            }
+
+            .message {
+                margin-bottom: 6px;
+                min-height: 18px;
+                font-size: 1em;
+            }
+
+            .action-btns {
+                margin-top: 6px;
+            }
+
+            .cart-item {
+                padding: 8px;
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .register-buttons {
+                gap: 6px;
+                margin-top: 6px;
+            }
+
+            #checkoutBtn,
+            #newOrderBtn {
+                min-height: 36px;
+            }
+
+            #checkoutBtn .front,
+            #newOrderBtn .front {
+                font-size: clamp(1.3rem, 3.5vw, 1.8rem) !important;
+            }
+
+            .num-btn {
+                min-height: 40px;
+            }
+
+            .num-btn .front {
+                padding: 0;
+                font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+            }
+
+            .num-enter .front {
+                font-size: clamp(1.4rem, 3.5vw, 2rem) !important;
+            }
+
+            .numpad {
+                gap: 6px;
+            }
+
+            .product-img {
+                max-width: 140px;
+            }
+
+            .product-btn .front {
+                padding: 15px;
+                gap: 10px;
+            }
+
+            .product-btn .front .product-name {
+                font-size: 1.1em;
+                min-height: 2.2em;
+            }
+
+            .product-btn .front .product-price {
+                font-size: 0.9em;
+            }
+        }
+
+        @media screen and (max-height: 700px) {
+            .register-buttons {
+                gap: 6px;
+                margin-top: 6px;
+            }
+
+            #checkoutBtn,
+            #newOrderBtn {
+                min-height: 34px;
+                padding: clamp(4px, 1vh, 10px);
+                font-size: clamp(0.7rem, 1.5vw, 1rem);
+            }
+        }
+
+        @media screen and (max-height: 600px) {
+            .register-buttons {
+                gap: 4px;
+                margin-top: 4px;
+            }
+
+            #checkoutBtn,
+            #newOrderBtn {
+                min-height: 30px;
+            }
+
+            #checkoutBtn .front,
+            #newOrderBtn .front {
+                font-size: clamp(1.2rem, 3vw, 1.6rem) !important;
+            }
+        }
+
+        /* Specific optimization for 1366x598 resolution */
+        @media screen and (min-width: 1300px) and (max-height: 650px) {
+            .num-btn .front {
+                font-size: 2rem !important;
+            }
+
+            .num-enter .front {
+                font-size: 1.5rem !important;
+            }
+
+            #checkoutBtn .front,
+            #newOrderBtn .front {
+                font-size: 1.4rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Restaurant Selection Screen -->
+    <div class="restaurant-selection" id="restaurantSelection">
+        <h1>Select a Restaurant</h1>
+        <div class="restaurant-grid" id="restaurantGrid"></div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app" id="mainApp">
+        <div class="header">
+            <button class="pushable back-btn" onclick="backToSelection()">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">← Back</span>
+            </button>
+            <h1 id="page-title" contenteditable="true">Restaurant</h1>
+            <div style="display: flex; gap: 10px;">
+                <button class="pushable qr-btn" id="menuModeBtn">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">📋 Menu</span>
+                </button>
+                <button class="pushable qr-btn" id="qrBtn">
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">QR Code</span>
+                </button>
+            </div>
+        </div>
+        <div class="container">
+            <div class="products">
+                <h2>Products</h2>
+                <div id="productsContainer"></div>
+            </div>
+            <div class="register-section">
+                <div class="register">
+                    <h2>Cash Register</h2>
+                    <div class="message" id="message">Select a main dish</div>
+                    <div class="display" id="display">¥0</div>
+                    <div class="numpad">
+                        <button class="pushable num-btn num-1"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">1</span></button>
+                        <button class="pushable num-btn num-2"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">2</span></button>
+                        <button class="pushable num-btn num-3"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">3</span></button>
+                        <button class="pushable num-btn num-4"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">4</span></button>
+                        <button class="pushable num-btn num-5"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">5</span></button>
+                        <button class="pushable num-btn num-6"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">6</span></button>
+                        <button class="pushable num-btn num-7"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">7</span></button>
+                        <button class="pushable num-btn num-8"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">8</span></button>
+                        <button class="pushable num-btn num-9"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">9</span></button>
+                        <button class="pushable num-btn num-0"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">0</span></button>
+                        <button class="pushable num-btn num-00"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">00</span></button>
+                        <button class="pushable num-btn num-000"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">000</span></button>
+                        <button class="pushable num-btn num-enter"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">ENTER</span></button>
+                    </div>
+                    <div class="register-buttons">
+                        <button class="pushable num-btn" id="checkoutBtn"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">CHECK OUT</span></button>
+                        <button class="pushable num-btn" id="newOrderBtn"><span class="shadow"></span><span
+                                class="edge"></span><span class="front">NEW ORDER</span></button>
+                    </div>
+                </div>
+                <div class="cart-container">
+                    <h2>Order</h2>
+                    <div class="cart" id="cart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Code Modal -->
+        <div class="qr-modal" id="qrModal">
+            <div class="qr-modal-content">
+                <img src="qrcode.png" alt="QR Code">
+            </div>
+        </div>
+
+        <!-- Menu Mode Modal -->
+        <div class="menu-modal" id="menuModal">
+            <div class="menu-modal-content">
+                <button class="menu-close" onclick="closeMenuMode()">✕</button>
+                <div id="menuContent"></div>
+            </div>
+        </div>
+    </div>
+    <!-- End Main App -->
+
+    <!-- Modal for creating new sets -->
+    <div class="modal" id="setModal">
+        <div class="modal-content">
+            <div class="modal-title">Create New Set</div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Product Confirmation Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content product-modal-content">
+            <button class="modal-close" onclick="closeProductModal()">✕</button>
+            <div class="product-modal-img-wrapper">
+                <img id="productModalImage" src="" alt="" class="product-modal-image">
+            </div>
+            <h2 id="productModalName" class="product-modal-name"></h2>
+            <p id="productModalPrice" class="product-modal-price"></p>
+            <div class="quantity-selector">
+                <label>How many?</label>
+                <div class="quantity-controls">
+                    <button class="pushable quantity-btn" onclick="decreaseQuantity()">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <span class="front">−</span>
+                    </button>
+                    <span id="modalQuantity" class="quantity-display">1</span>
+                    <button class="pushable quantity-btn" onclick="increaseQuantity()">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <span class="front">+</span>
+                    </button>
+                </div>
+            </div>
+            <button class="pushable action-btn confirm-btn" onclick="confirmProductSelection()">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">Add to Order</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Restaurant Configurations
+        let restaurants = {};
+        const restaurantKeys = ['horizon', 'kirbycafe', 'pokemon', 'Rilakkuma'];
+
+        // Load restaurant configurations
+        async function loadRestaurants() {
+            for (const key of restaurantKeys) {
+                try {
+                    const response = await fetch(`restaurants/${key}/menu.json`);
+                    const data = await response.json();
+
+                    // Check if logo exists (try both .png and .jpg)
+                    let logoPath = null;
+                    let hasLogo = false;
+
+                    for (const ext of ['png', 'jpg', 'jpeg']) {
+                        const testPath = `restaurants/${key}/logo.${ext}`;
+                        try {
+                            const logoResponse = await fetch(testPath, { method: 'HEAD' });
+                            if (logoResponse.ok) {
+                                logoPath = testPath;
+                                hasLogo = true;
+                                break;
+                            }
+                        } catch (e) {
+                            // Continue to next extension
+                        }
+                    }
+
+                    restaurants[key] = {
+                        ...data,
+                        products: data.categories,
+                        folder: `restaurants/${key}/`,
+                        logo: hasLogo,
+                        logoPath: logoPath
+                    };
+                } catch (error) {
+                    console.error(`Failed to load ${key} restaurant:`, error);
+                }
+            }
+        }
+
+        let currentRestaurant = null;
+        let currentCategory = 'main'; // Track which category is being shown
+        const categoryOrder = ['set', 'main', 'dessert', 'drink'];
+        const guidedOrder = ['main', 'dessert', 'drink']; // Order for guided flow
+        let guidedModeActive = true;
+        let currentGuidedStep = 0; // 0=main, 1=dessert, 2=drink
+        const pageTitle = document.getElementById('page-title');
+        let products = {};
+
+        let cart = [];
+        let currentStep = 'select';
+        let selectedProduct = null;
+        let currentInput = '';
+        let newSetSelections = {
+            main: null,
+            dessert: null,
+            drink: null
+        };
+        let currentSetStep = 'main';
+
+        function createProductButton(product, isNewSet = false) {
+            const btn = document.createElement('button');
+            btn.className = `pushable product-btn${isNewSet ? ' new-set' : ''}`;
+
+            let frontContent = '';
+
+            if (isNewSet) {
+                frontContent = `
+                    <div class="product-img-wrapper">
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                    </div>
+                    <span class="product-name">${product.name}</span>
+                `;
+            } else if (product.items) { // If it's a set
+                frontContent = `
+                    <div class="set-images-container">
+                        <div class="product-img-wrapper"><img src="${product.items[0]?.image || '/api/placeholder/32/32'}" alt="main" class="set-mini-img"></div>
+                        <div class="product-img-wrapper"><img src="${product.items[1]?.image || '/api/placeholder/32/32'}" alt="dessert" class="set-mini-img"></div>
+                        <div class="product-img-wrapper"><img src="${product.items[2]?.image || '/api/placeholder/32/32'}" alt="drink" class="set-mini-img"></div>
+                    </div>
+                    <span class="product-name">${product.name}</span>
+                    <span class="product-price">¥${product.price}</span>
+                `;
+            } else {
+                frontContent = `
+                    <div class="product-img-wrapper">
+                        <img src="${product.image}" alt="${product.name}" class="product-img">
+                    </div>
+                    <span class="product-name">${product.name}</span>
+                    <span class="product-price">¥${product.price}</span>
+                `;
+            }
+
+            btn.innerHTML = `
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">${frontContent}</span>
+            `;
+
+            btn.onclick = isNewSet ? openSetModal : () => handleProductClick(product);
+            return btn;
+        }
+
+
+
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+
+            // Create navigation buttons
+            const navDiv = document.createElement('div');
+            navDiv.className = 'category-nav';
+
+            categoryOrder.forEach(category => {
+                // Show Set category even if empty (for "Create New Set" button)
+                if (category === 'set' || (products[category] && products[category].length > 0)) {
+                    const navBtn = document.createElement('button');
+                    const isActive = currentCategory === category;
+                    const categoryIndex = guidedOrder.indexOf(category);
+                    const isCompleted = guidedModeActive && categoryIndex >= 0 && categoryIndex < currentGuidedStep;
+                    const isDisabled = guidedModeActive && category !== 'set' && category !== guidedOrder[currentGuidedStep];
+                    
+                    let className = 'pushable category-nav-btn';
+                    if (isActive) className += ' active';
+                    if (isCompleted) className += ' completed';
+                    if (isDisabled) className += ' disabled';
+                    
+                    navBtn.className = className;
+                    navBtn.innerHTML = `
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <span class="front">${isCompleted ? '✓ ' : ''}${category.charAt(0).toUpperCase() + category.slice(1)}${category === 'set' ? 's' : ''}</span>
+                    `;
+                    navBtn.onclick = () => {
+                        // Allow Set category anytime, otherwise respect guided mode
+                        if (category === 'set' || !guidedModeActive || category === guidedOrder[currentGuidedStep]) {
+                            currentCategory = category;
+                            renderProducts();
+                        }
+                    };
+                    if (isDisabled) {
+                        navBtn.style.opacity = '0.5';
+                        navBtn.style.cursor = 'not-allowed';
+                    }
+                    navDiv.appendChild(navBtn);
+                }
+            });
+
+            container.appendChild(navDiv);
+
+            // Show only current category
+            const items = products[currentCategory] || [];
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+
+            const productGrid = document.createElement('div');
+            productGrid.className = 'product-grid';
+
+            // Add "New Set" button only to Set category
+            if (currentCategory === 'set') {
+                const newSetBtn = createProductButton(
+                    { name: 'Create New Set', image: 'restaurants/new.png' },
+                    true
+                );
+                productGrid.appendChild(newSetBtn);
+            }
+
+            // Add products
+            items.forEach(product => {
+                productGrid.appendChild(createProductButton(product));
+            });
+
+            categoryDiv.appendChild(productGrid);
+            container.appendChild(categoryDiv);
+
+            // Add touch animations to category nav buttons
+            setTimeout(() => addTouchAnimations(), 0);
+        }
+
+        function openSetModal() {
+            const modal = document.getElementById('setModal');
+            modal.classList.add('active');
+            currentSetStep = 'main';
+            newSetSelections = { main: null, dessert: null, drink: null };
+            updateSetModal();
+        }
+
+        function updateSetModal() {
+            const modalContent = document.getElementById('modalContent');
+            let content = '';
+            let title = '';
+            let items = [];
+
+            switch (currentSetStep) {
+                case 'main':
+                    title = 'Choose Main Dish';
+                    items = products.main;
+                    break;
+                case 'dessert':
+                    title = 'Choose Dessert';
+                    items = products.dessert;
+                    break;
+                case 'drink':
+                    title = 'Choose Drink';
+                    items = products.drink;
+                    break;
+                case 'name':
+                    modalContent.innerHTML = `
+                    <div class="modal-title">Name Your Set</div>
+                    <input type="text" class="set-name-input" id="setNameInput" maxlength="30" placeholder="Enter set name">
+                    <button class="pushable action-btn" onclick="finalizeSet()">
+                        <span class="shadow"></span>
+                        <span class="edge"></span>
+                        <span class="front">Create Set</span>
+                    </button>
+                `;
+                    return;
+            }
+
+            content = `
+            <div class="modal-title">${title}</div>
+            <div class="modal-grid">
+                ${items.map(item => `
+                    <div class="modal-item ${newSetSelections[currentSetStep]?.id === item.id ? 'selected' : ''}"
+                         onclick="selectSetItem('${item.id}')">
+                        ${item.name}<br>¥${item.price}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+            modalContent.innerHTML = content;
+        }
+
+        function selectSetItem(itemId) {
+            const items = products[currentSetStep];
+            const selectedItem = items.find(item => item.id === itemId);
+            newSetSelections[currentSetStep] = selectedItem;
+
+            if (currentSetStep === 'main') {
+                currentSetStep = 'dessert';
+            } else if (currentSetStep === 'dessert') {
+                currentSetStep = 'drink';
+            } else if (currentSetStep === 'drink') {
+                currentSetStep = 'name';
+            }
+
+            updateSetModal();
+        }
+
+        function finalizeSet() {
+            const setName = document.getElementById('setNameInput').value.trim();
+            if (!setName) {
+                alert('Please enter a name for your set');
+                return;
+            }
+
+            const totalPrice =
+                (newSetSelections.main?.price || 0) +
+                (newSetSelections.dessert?.price || 0) +
+                (newSetSelections.drink?.price || 0);
+
+            // Apply a small discount for sets
+            const setPrice = Math.floor(totalPrice * 0.9);
+
+            const newSet = {
+                id: 'set' + (products.set.length + 1),
+                name: setName,
+                price: setPrice,
+                image: '/api/placeholder/64/64',
+                items: [
+                    newSetSelections.main,
+                    newSetSelections.dessert,
+                    newSetSelections.drink
+                ]
+            };
+
+            products.set.push(newSet);
+            closeModal();
+            renderProducts();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('setModal');
+            modal.classList.remove('active');
+        }
+
+        // Rest of the existing functions remain the same
+        function updateDisplay() {
+            const display = document.getElementById('display');
+            if (currentStep === 'payment') {
+                display.textContent = `¥${currentInput || '0'}`;
+            } else {
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                display.textContent = `¥${total}`;
+            }
+        }
+
+
+
+        function updateMessage(text) {
+            document.getElementById('message').textContent = text;
+        }
+
+        function updateCart() {
+            const cartEl = document.getElementById('cart');
+            cartEl.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span>${item.quantity}x ${item.name}</span>
+                    <span>¥${(item.price * item.quantity)}</span>
+                </div>
+            `).join('') + (cart.length ? `
+                <div class="total">
+                    Total: ¥${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)}
+                </div>
+            ` : '');
+        }
+
+        let modalQuantity = 1;
+
+        function handleProductClick(product) {
+            if (currentStep !== 'select') return;
+            
+            // In guided mode, add directly to cart with quantity 1
+            if (guidedModeActive) {
+                cart.push({ ...product, quantity: 1 });
+                updateCart();
+                updateDisplay();
+                
+                // Move to next category in guided flow
+                if (currentGuidedStep < guidedOrder.length - 1) {
+                    currentGuidedStep++;
+                    currentCategory = guidedOrder[currentGuidedStep];
+                    renderProducts();
+                    updateMessage(`Select a ${currentCategory}`);
+                } else {
+                    // Completed the guided flow
+                    updateMessage('Order complete! Add more items or checkout');
+                    guidedModeActive = false;
+                }
+            } else {
+                // Free mode - open modal for quantity selection
+                selectedProduct = product;
+                modalQuantity = 1;
+                openProductModal(product);
+            }
+        }
+
+        function openProductModal(product) {
+            const modal = document.getElementById('productModal');
+            document.getElementById('productModalImage').src = product.image;
+            document.getElementById('productModalName').textContent = product.name;
+            document.getElementById('productModalPrice').textContent = `¥${product.price}`;
+            document.getElementById('modalQuantity').textContent = modalQuantity;
+            modal.classList.add('active');
+        }
+
+        function closeProductModal() {
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('active');
+            modalQuantity = 1;
+        }
+
+        function increaseQuantity() {
+            if (modalQuantity < 99) {
+                modalQuantity++;
+                document.getElementById('modalQuantity').textContent = modalQuantity;
+            }
+        }
+
+        function decreaseQuantity() {
+            if (modalQuantity > 1) {
+                modalQuantity--;
+                document.getElementById('modalQuantity').textContent = modalQuantity;
+            }
+        }
+
+        function confirmProductSelection() {
+            if (selectedProduct && modalQuantity > 0) {
+                cart.push({ ...selectedProduct, quantity: modalQuantity });
+                updateCart();
+                updateDisplay();
+                closeProductModal();
+                selectedProduct = null;
+            }
+        }
+
+        function handleNumberInput(num) {
+            if (currentStep === 'select') return;
+            if (currentInput.length >= 5) return;
+            currentInput += num;
+            updateDisplay();
+        }
+
+        function handleEnter() {
+            if (currentStep === 'payment') {
+                const payment = parseInt(currentInput);
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const change = payment - total;
+                if (change >= 0) {
+                    const display = document.getElementById('display');
+                    display.textContent = `Your change is: ¥${change}`;  // Show change in display
+                    updateMessage('Thank you for shopping!');
+                    cart = [];
+                    currentInput = '';
+                    currentStep = 'select';
+                    updateCart();
+                } else {
+                    updateMessage('Not enough money! Please pay the full amount.');
+                }
+            }
+        }
+
+
+        function handleCheckout() {
+            if (cart.length === 0) return;
+            currentStep = 'payment';
+            currentInput = '';
+            updateDisplay();
+            updateMessage('Enter payment amount');
+        }
+
+        function handleNewOrder() {
+            cart = [];
+            currentStep = 'select';
+            currentInput = '';
+            selectedProduct = null;
+            guidedModeActive = true;
+            currentGuidedStep = 0;
+            currentCategory = 'main';
+            updateCart();
+            updateDisplay();
+            renderProducts();
+            updateMessage('Select a main dish');
+        }
+
+        function renderRestaurantSelection() {
+            const grid = document.getElementById('restaurantGrid');
+            grid.innerHTML = '';
+
+            Object.entries(restaurants).forEach(([key, restaurant]) => {
+                const card = document.createElement('button');
+                card.className = 'restaurant-card pushable';
+
+                // Use logo image if available, otherwise use icon emoji
+                const iconContent = restaurant.logo
+                    ? `<img src="${restaurant.logoPath}" alt="${restaurant.name}" class="restaurant-logo">`
+                    : `<div class="icon">${restaurant.icon || '🍽️'}</div>`;
+
+                card.innerHTML = `
+                    <span class="shadow"></span>
+                    <span class="edge"></span>
+                    <span class="front">
+                        ${iconContent}
+                        <h2>${restaurant.name}</h2>
+                        <p>${restaurant.description}</p>
+                    </span>
+                `;
+                card.onclick = () => selectRestaurant(key);
+                grid.appendChild(card);
+            });
+
+            // Add touch animations to restaurant cards
+            setTimeout(() => addTouchAnimations(), 0);
+        }
+
+        function selectRestaurant(restaurantKey) {
+            currentRestaurant = restaurants[restaurantKey];
+            products = JSON.parse(JSON.stringify(currentRestaurant.products)); // Deep clone
+
+            // Update image paths to use restaurant folder
+            Object.keys(products).forEach(category => {
+                if (products[category]) {
+                    products[category] = products[category].map(item => ({
+                        ...item,
+                        image: currentRestaurant.folder + item.image
+                    }));
+                }
+            });
+
+            // Reset to first available category
+            currentCategory = categoryOrder.find(cat => products[cat] && products[cat].length > 0) || 'main';
+
+            // Apply theme
+            applyTheme(currentRestaurant.theme);
+
+            // Update title
+            pageTitle.textContent = currentRestaurant.name;
+            document.title = currentRestaurant.name;
+
+            // Show main app, hide selection
+            document.getElementById('restaurantSelection').style.display = 'none';
+            document.getElementById('mainApp').classList.add('active');
+            document.body.classList.add('restaurant-active');
+
+            // Initialize the app
+            initializeApp();
+        }
+
+        function applyTheme(theme) {
+            document.body.style.backgroundColor = theme.primary;
+            document.body.style.backgroundImage = theme.gradient;
+
+            const style = document.createElement('style');
+            style.id = 'dynamic-theme';
+            style.textContent = `
+                .products { background: ${theme.productsPanel} !important; }
+                .register { background: ${theme.registerPanel} !important; }
+                .cart-container { background: ${theme.cartPanel} !important; }
+                .header h1 { text-shadow: 3px 3px 0 ${theme.secondary} !important; }
+            `;
+
+            // Remove old theme if exists
+            const oldTheme = document.getElementById('dynamic-theme');
+            if (oldTheme) oldTheme.remove();
+
+            document.head.appendChild(style);
+        }
+
+        function backToSelection() {
+            // Reset state
+            cart = [];
+            currentStep = 'select';
+            currentInput = '';
+            selectedProduct = null;
+
+            // Hide main app, show selection
+            document.getElementById('mainApp').classList.remove('active');
+            document.getElementById('restaurantSelection').style.display = 'flex';
+            document.body.classList.remove('restaurant-active');
+            document.body.style.backgroundColor = '';
+            document.body.style.backgroundImage = '';
+
+            // Remove dynamic theme
+            const oldTheme = document.getElementById('dynamic-theme');
+            if (oldTheme) oldTheme.remove();
+        }
+
+        function openMenuMode() {
+            console.log('openMenuMode called');
+            console.log('currentRestaurant:', currentRestaurant);
+            const menuContent = document.getElementById('menuContent');
+            const restaurant = currentRestaurant; // currentRestaurant is already the restaurant object
+
+            console.log('restaurant:', restaurant);
+            if (!restaurant) {
+                console.error('No restaurant found');
+                return;
+            }
+
+            // Build available categories
+            const availableCategories = categoryOrder.filter(category => {
+                const items = restaurant.products[category];
+                return items && items.length > 0;
+            });
+
+            let html = `
+                <div class="menu-header">
+                    <h1>${restaurant.name}</h1>
+                    <p>${restaurant.description || ''}</p>
+                </div>
+                <div class="menu-tabs">
+            `;
+
+            // Create tabs
+            availableCategories.forEach((category, index) => {
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                const activeClass = index === 0 ? 'active' : '';
+                html += `<button class="menu-tab ${activeClass}" data-category="${category}">${categoryName}</button>`;
+            });
+
+            html += `</div>`;
+
+            // Loop through categories
+            availableCategories.forEach((category, index) => {
+                const items = restaurant.products[category];
+                const categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                const activeClass = index === 0 ? 'active' : '';
+
+                html += `
+                    <div class="menu-category ${activeClass}" data-category="${category}">
+                        <h2 class="menu-category-title">${categoryName}</h2>
+                        <div class="menu-items">
+                `;
+
+                items.forEach(item => {
+                    const imagePath = restaurant.folder + item.image;
+                    html += `
+                        <div class="menu-item">
+                            <img src="${imagePath}" alt="${item.name}" class="menu-item-image">
+                            <div class="menu-item-details">
+                                <h3 class="menu-item-name">${item.name}</h3>
+                                <p class="menu-item-price">${item.price}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            menuContent.innerHTML = html;
+
+            // Add tab click handlers
+            document.querySelectorAll('.menu-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const category = tab.dataset.category;
+
+                    // Update active tab
+                    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Update active category
+                    document.querySelectorAll('.menu-category').forEach(c => c.classList.remove('active'));
+                    document.querySelector(`.menu-category[data-category="${category}"]`).classList.add('active');
+                });
+            });
+
+            // Apply restaurant theme to menu
+            const menuModalContent = document.querySelector('.menu-modal-content');
+            menuModalContent.className = 'menu-modal-content'; // Reset classes
+
+            const restaurantName = restaurant.name.toLowerCase();
+            if (restaurantName.includes('pokemon')) {
+                menuModalContent.classList.add('theme-pokemon');
+            } else if (restaurantName.includes('kirby')) {
+                menuModalContent.classList.add('theme-kirbycafe');
+            } else if (restaurantName.includes('rilakkuma')) {
+                menuModalContent.classList.add('theme-rilakkuma');
+            }
+
+            document.getElementById('menuModal').classList.add('active');
+        }
+
+        function closeMenuMode() {
+            document.getElementById('menuModal').classList.remove('active');
+        }
+
+        function initializeApp() {
+            renderProducts();
+
+            document.querySelectorAll('.num-btn').forEach(btn => {
+                const text = btn.textContent;
+                if (text === 'ENTER') {
+                    btn.onclick = handleEnter;
+                } else {
+                    btn.onclick = () => handleNumberInput(text);
+                }
+            });
+
+            document.getElementById('checkoutBtn').onclick = handleCheckout;
+            document.getElementById('newOrderBtn').onclick = handleNewOrder;
+
+            // Close modal when clicking outside
+            document.getElementById('setModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('setModal')) {
+                    closeModal();
+                }
+            });
+
+            // Close product modal when clicking outside
+            document.getElementById('productModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('productModal')) {
+                    closeProductModal();
+                }
+            });
+
+            // QR code functionality
+            const qrBtn = document.getElementById('qrBtn');
+            const qrModal = document.getElementById('qrModal');
+
+            qrBtn.addEventListener('click', () => {
+                qrModal.classList.add('active');
+            });
+
+            qrModal.addEventListener('click', (e) => {
+                if (e.target === qrModal) {
+                    qrModal.classList.remove('active');
+                }
+            });
+
+            // Menu Mode functionality
+            const menuModeBtn = document.getElementById('menuModeBtn');
+            const menuModal = document.getElementById('menuModal');
+
+            if (menuModeBtn) {
+                menuModeBtn.addEventListener('click', () => {
+                    console.log('Menu button clicked');
+                    openMenuMode();
+                });
+            }
+
+            if (menuModal) {
+                menuModal.addEventListener('click', (e) => {
+                    if (e.target === menuModal) {
+                        closeMenuMode();
+                    }
+                });
+            }
+
+            pageTitle.addEventListener('input', () => {
+                document.title = pageTitle.textContent;
+            });
+
+            // Add touch animation support for all pushable buttons
+            addTouchAnimations();
+        }
+
+        function addTouchAnimations() {
+            document.querySelectorAll('.pushable').forEach(button => {
+                button.addEventListener('touchstart', function (e) {
+                    const front = this.querySelector('.front');
+                    const shadow = this.querySelector('.shadow');
+                    if (front && shadow) {
+                        front.style.transform = 'translateY(-2px)';
+                        shadow.style.transform = 'translateY(1px)';
+                    }
+                }, { passive: true });
+
+                button.addEventListener('touchend', function (e) {
+                    const front = this.querySelector('.front');
+                    const shadow = this.querySelector('.shadow');
+                    if (front && shadow) {
+                        front.style.transform = 'translateY(-4px)';
+                        shadow.style.transform = 'translateY(2px)';
+
+                        // Reset after a short delay
+                        setTimeout(() => {
+                            front.style.transform = '';
+                            shadow.style.transform = '';
+                        }, 150);
+                    }
+                }, { passive: true });
+
+                button.addEventListener('touchcancel', function (e) {
+                    const front = this.querySelector('.front');
+                    const shadow = this.querySelector('.shadow');
+                    if (front && shadow) {
+                        front.style.transform = '';
+                        shadow.style.transform = '';
+                    }
+                }, { passive: true });
+            });
+        }
+
+        // Call initialize function when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadRestaurants();
+            renderRestaurantSelection();
+        });
+
+
+        document.getElementById('checkoutBtn').onclick = handleCheckout;
+        document.getElementById('newOrderBtn').onclick = handleNewOrder;
+
+        // Close modal when clicking outside
+        document.getElementById('setModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('setModal')) {
+                closeModal();
+            }
+        });
+        pageTitle.addEventListener('input', () => {
+            document.title = pageTitle.textContent;
+        });
+
+    </script>
+</body>
+
+</html>

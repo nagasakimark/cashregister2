@@ -1,0 +1,286 @@
+{
+  "name": "New Horizon Restaurant",
+  "icon": "🌅",
+  "description": "Japanese & International Cuisine",
+  "theme": {
+    "primary": "#6eb5d0",
+    "secondary": "#4a9bb5",
+    "gradient": "linear-gradient(179deg, rgba(110, 181, 208, 0.9) 9.6%, rgba(126, 184, 201, 0.8) 50.1%)",
+    "productsPanel": "#ffd4e5",
+    "registerPanel": "#d4f1d4",
+    "cartPanel": "#ffe4b3"
+  },
+  "categories": {
+    "set": [],
+    "main": [
+      {
+        "id": "main1",
+        "name": "rice",
+        "price": 130,
+        "image": "products/main/rice.png"
+      },
+      {
+        "id": "main2",
+        "name": "rice ball",
+        "price": 120,
+        "image": "products/main/riceball.png"
+      },
+      {
+        "id": "main3",
+        "name": "curry and rice",
+        "price": 490,
+        "image": "products/main/curryrice.png"
+      },
+      {
+        "id": "main4",
+        "name": "grilled eel",
+        "price": 830,
+        "image": "products/main/grilledeel.png"
+      },
+      {
+        "id": "main5",
+        "name": "grilled fish",
+        "price": 400,
+        "image": "products/main/grilledfish.png"
+      },
+      {
+        "id": "main6",
+        "name": "bread",
+        "price": 160,
+        "image": "products/main/bread.png"
+      },
+      {
+        "id": "main7",
+        "name": "sandwich",
+        "price": 180,
+        "image": "products/main/sandwich.png"
+      },
+      {
+        "id": "main9",
+        "name": "pizza",
+        "price": 500,
+        "image": "products/main/pizza.png"
+      },
+      {
+        "id": "main10",
+        "name": "hamburger",
+        "price": 340,
+        "image": "products/main/hamburger.png"
+      },
+      {
+        "id": "main11",
+        "name": "hot dog",
+        "price": 290,
+        "image": "products/main/hotdog.png"
+      },
+      {
+        "id": "main12",
+        "name": "French fries",
+        "price": 260,
+        "image": "products/main/frenchfries.png"
+      },
+      {
+        "id": "main13",
+        "name": "fried chicken",
+        "price": 250,
+        "image": "products/main/friedchicken.png"
+      },
+      {
+        "id": "main14",
+        "name": "sausage",
+        "price": 190,
+        "image": "products/main/sausage.png"
+      },
+      {
+        "id": "main15",
+        "name": "steak",
+        "price": 630,
+        "image": "products/main/steak.png"
+      },
+      {
+        "id": "main16",
+        "name": "omelet",
+        "price": 410,
+        "image": "products/main/omelet.png"
+      },
+      {
+        "id": "main17",
+        "name": "spaghetti",
+        "price": 560,
+        "image": "products/main/spaghetti.png"
+      },
+      {
+        "id": "main18",
+        "name": "pie",
+        "price": 330,
+        "image": "products/main/pie.png"
+      },
+      {
+        "id": "main19",
+        "name": "salad",
+        "price": 240,
+        "image": "products/main/salad.png"
+      },
+      {
+        "id": "main20",
+        "name": "fried noodles",
+        "price": 350,
+        "image": "products/main/friednoodles.png"
+      },
+      {
+        "id": "main21",
+        "name": "ramen",
+        "price": 480,
+        "image": "products/main/ramen.png"
+      },
+      {
+        "id": "main22",
+        "name": "soba",
+        "price": 420,
+        "image": "products/main/soba.png"
+      },
+      {
+        "id": "main23",
+        "name": "beef bowl",
+        "price": 380,
+        "image": "products/main/beefbowl.png"
+      },
+      {
+        "id": "main24",
+        "name": "sushi",
+        "price": 400,
+        "image": "products/main/sushi.png"
+      },
+      {
+        "id": "main25",
+        "name": "tempura",
+        "price": 590,
+        "image": "products/main/tempura.png"
+      },
+      {
+        "id": "main26",
+        "name": "soup",
+        "price": 270,
+        "image": "products/main/soup.png"
+      }
+    ],
+    "dessert": [
+      {
+        "id": "dessert1",
+        "name": "cake",
+        "price": 250,
+        "image": "products/dessert/cake.png"
+      },
+      {
+        "id": "dessert2",
+        "name": "donut",
+        "price": 100,
+        "image": "products/dessert/donut.png"
+      },
+      {
+        "id": "dessert3",
+        "name": "parfait",
+        "price": 320,
+        "image": "products/dessert/parfait.png"
+      },
+      {
+        "id": "dessert4",
+        "name": "pudding",
+        "price": 210,
+        "image": "products/dessert/pudding.png"
+      },
+      {
+        "id": "dessert5",
+        "name": "ice cream",
+        "price": 220,
+        "image": "products/dessert/icecream.png"
+      },
+      {
+        "id": "dessert11",
+        "name": "pancake",
+        "price": 300,
+        "image": "products/dessert/pancake.png"
+      },
+      {
+        "id": "dessert6",
+        "name": "shaved ice",
+        "price": 170,
+        "image": "products/dessert/shavedice.png"
+      },
+      {
+        "id": "dessert7",
+        "name": "chocolate",
+        "price": 110,
+        "image": "products/dessert/chocolate.png"
+      },
+      {
+        "id": "dessert8",
+        "name": "cream puff",
+        "price": 120,
+        "image": "products/dessert/creampuff.png"
+      },
+      {
+        "id": "dessert9",
+        "name": "popcorn",
+        "price": 190,
+        "image": "products/dessert/popcorn.png"
+      },
+      {
+        "id": "dessert10",
+        "name": "potato chips",
+        "price": 120,
+        "image": "products/dessert/potatochips.png"
+      }
+    ],
+    "drink": [
+      {
+        "id": "drink1",
+        "name": "coffee",
+        "price": 150,
+        "image": "products/drink/coffee.png"
+      },
+      {
+        "id": "drink2",
+        "name": "tea",
+        "price": 140,
+        "image": "products/drink/tea.png"
+      },
+      {
+        "id": "drink3",
+        "name": "green tea",
+        "price": 150,
+        "image": "products/drink/greentea.png"
+      },
+      {
+        "id": "drink4",
+        "name": "juice",
+        "price": 200,
+        "image": "products/drink/juice.png"
+      },
+      {
+        "id": "drink5",
+        "name": "soda",
+        "price": 130,
+        "image": "products/drink/soda.png"
+      },
+      {
+        "id": "drink6",
+        "name": "milk",
+        "price": 110,
+        "image": "products/drink/milk.png"
+      },
+      {
+        "id": "drink7",
+        "name": "water",
+        "price": 0,
+        "image": "products/drink/water.png"
+      },
+      {
+        "id": "drink8",
+        "name": "mineral water",
+        "price": 100,
+        "image": "products/drink/mineralwater.png"
+      }
+    ]
+  }
+}
